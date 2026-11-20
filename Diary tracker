@@ -1,0 +1,81 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class DiaryEntry {
+    private String date;
+    private String title;
+    private String text;
+    private String mood;
+
+    public DiaryEntry(String date, String title, String text, String mood) {
+        this.date = date;
+        this.title = title;
+        this.text = text;
+        this.mood = mood;
+    }
+
+    public String getTitle() { return title; }
+
+    public void display() {
+        System.out.println("Date: " + date + " | Mood: " + mood);
+        System.out.println("Title: " + title);
+        System.out.println("Entry: " + text);
+        System.out.println("----------------------");
+    }
+}
+
+class DiaryManager {
+    private ArrayList<DiaryEntry> entries = new ArrayList<>();
+
+    public void addEntry(DiaryEntry e) {
+        entries.add(e);
+        System.out.println("Diary Saved!");
+    }
+
+    public void showAll() {
+        if (entries.isEmpty()) {
+            System.out.println("Koi diary nahi hai!");
+            return;
+        }
+        for (DiaryEntry e : entries) {
+            e.display();
+        }
+    }
+
+    public void deleteByTitle(String title) {
+        entries.removeIf(e -> e.getTitle().equalsIgnoreCase(title));
+        System.out.println("Deleted!");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        DiaryManager manager = new DiaryManager();
+
+        while (true) {
+            System.out.println("\n1. New Diary Likho");
+            System.out.println("2. Sari Diary Dekho");
+            System.out.println("3. Diary Delete Karo");
+            System.out.println("4. Exit");
+            System.out.print("Choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            if (choice == 1) {
+                System.out.print("Date: "); String date = sc.nextLine();
+                System.out.print("Title: "); String title = sc.nextLine();
+                System.out.print("Mood (Happy/Sad/Angry): "); String mood = sc.nextLine();
+                System.out.print("Likho: "); String text = sc.nextLine();
+                manager.addEntry(new DiaryEntry(date, title, text, mood));
+            } else if (choice == 2) {
+                manager.showAll();
+            } else if (choice == 3) {
+                System.out.print("Konsi Title delete karni hai? ");
+                manager.deleteByTitle(sc.nextLine());
+            } else {
+                break;
+            }
+        }
+    }
+}
